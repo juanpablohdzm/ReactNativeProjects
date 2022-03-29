@@ -6,6 +6,7 @@ import {
   Button,
   TextInput,
   ScrollView,
+  FlatList,
 } from "react-native";
 
 export default function App() {
@@ -19,7 +20,7 @@ export default function App() {
   function addGoalHandler() {
     setCourseGoals((currentCourseGoals) => [
       ...currentCourseGoals,
-      enteredInputText,
+      {text:enteredInputText, id: Math.random().toString()},
     ]);
   }
 
@@ -34,19 +35,25 @@ export default function App() {
         <Button title="Add Goal" onPress={addGoalHandler} />
       </View>
       <View style={styles.goalsContainer}>
-        <ScrollView>
-          {courseGoals.map((goal, index) => (
-            <View style={styles.goalItem} key={index}>
-              <Text style={{ color: "white" }}>{goal}</Text>
-            </View>
-          ))}
-        </ScrollView>
+        <FlatList
+          data={courseGoals}
+          renderItem={(itemData) => {
+            return (
+              <View style={styles.goalItem}>
+                <Text style={{ color: "white" }}>{itemData.item.text}</Text>
+              </View>
+            );
+          }}
+          keyExtractor = {item => {return item.id}}
+        />
       </View>
     </View>
   );
 }
 
+/////Notes
 //Text for iphone doesn't contain rounded corners, you need a wrapper.
+//<ScrollView></ScrollView>  renders independently if the item is shown or not
 
 const styles = StyleSheet.create({
   appContainer: {
