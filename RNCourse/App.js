@@ -28,12 +28,16 @@ export default function App() {
       </View>
       <View style={styles.goalsContainer}>
         {courseGoals.map((goal, index) => (
-          <Text key={index}>{goal}</Text>
-        ))}
+          <View style={styles.goalItem} key={index}>
+            <Text style={{color:'white'}}>{goal}</Text> 
+          </View>
+        ))} 
       </View>
     </View>
   );
 }
+
+//Text for iphone doesn't contain rounded corners, you need a wrapper.
 
 const styles = StyleSheet.create({
   appContainer: {
@@ -58,5 +62,12 @@ const styles = StyleSheet.create({
   },
   goalsContainer: {
     flex: 4,
+  },
+  goalItem: {
+    margin: 8,
+    padding: 8,
+    borderRadius: 6,
+    backgroundColor: "#5e0acc",
+    color: "white", //There is no cascade styling.
   },
 });
