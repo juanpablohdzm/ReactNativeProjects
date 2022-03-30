@@ -9,7 +9,7 @@ export default function PrimaryButton(props) {
             ? [styles.pressed, styles.buttonInnerContainer]
             : styles.buttonInnerContainer
         }
-        onPress={() => console.log("hello")}
+        onPress={props.onPress}
         android_ripple={{ color: "#690437" }}
       >
         <Text style={styles.buttonText}>{props.children}</Text>
