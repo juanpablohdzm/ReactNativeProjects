@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Alert } from "react-native";
+import { View, Text, StyleSheet, Alert, FlatList } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import NumberContainer from "../game/NumberContainer";
 import PrimaryButton from "../ui/PrimaryButton";
 import Title from "../ui/Title";
@@ -20,8 +21,15 @@ var minBoundary = 1;
 var maxBoundary = 100;
 
 export default function GameScreen({ userNumber, onGameOver }) {
-  const initialGuess = generateRandomBetween(1, 100, userNumber);
-  const [currentGuess, setCurrentGuess] = useState(initialGuess);
+  const [currentGuess, setCurrentGuess] = useState();
+  const [guessRounds, setGuessRounds] = useState([]);
+
+  useEffect(() => {
+    minBoundary = 1;
+    maxBoundary = 100;
+    setCurrentGuess(generateRandomBetween(1, 100, userNumber));
+    setGuessRounds([]);
+  }, []); //By leaving it empty it will only execute the first time it renders
 
   useEffect(() => {
     //Executes when one or more dependencies changes.
@@ -54,8 +62,10 @@ export default function GameScreen({ userNumber, onGameOver }) {
       currentGuess
     );
     setCurrentGuess(newRndNumber);
+    setGuessRounds((prevGuessRounds) => [newRndNumber, ...prevGuessRounds]);
   }
 
+  console.log(guessRounds);
   return (
     <View style={styles.screen}>
       <Title>Opponent's Guess</Title>
@@ -68,16 +78,21 @@ export default function GameScreen({ userNumber, onGameOver }) {
           <View style={styles.buttonsContainer}>
             <View style={styles.buttonContainer}>
               <PrimaryButton onPress={nextGuessHandler.bind(this, "greater")}>
-                +
+                <Ionicons name="md-add" size={24} color="white" />
               </PrimaryButton>
             </View>
             <View style={styles.buttonContainer}>
               <PrimaryButton onPress={nextGuessHandler.bind(this, "lower")}>
-                -
+                <Ionicons name="md-remove" size={24} color="white" />
               </PrimaryButton>
             </View>
           </View>
         </Card>
+      </View>
+      <View>
+        <FlatList data={guessRounds} renderItem={(itemData)=>
+          <Text>{itemData.item}</Text>
+        } keyExtractor={(item)=> item}/>
       </View>
     </View>
   );
@@ -91,7 +106,7 @@ const styles = StyleSheet.create({
   buttonsContainer: {
     flexDirection: "row",
   },
-  buttonContainer:{
+  buttonContainer: {
     flex: 1,
   },
   instructionText: {
