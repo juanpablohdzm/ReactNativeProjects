@@ -1,7 +1,10 @@
-import { TextInput, View, StyleSheet, Alert } from "react-native";
+import { TextInput, View, StyleSheet, Alert, Text } from "react-native";
 import { useState } from "react";
-import PrimaryButton from "../PrimaryButton";
+import PrimaryButton from "../ui/PrimaryButton";
 import Colors from "../../constants/colors";
+import Title from "../ui/Title";
+import Card from "../ui/Card";
+import InstructionText from "../ui/InstructionText";
 
 export default function StartGameScreen(props) {
   const [number, setNumber] = useState("");
@@ -26,43 +29,37 @@ export default function StartGameScreen(props) {
   }
 
   return (
-    <View style={styles.inputContainer}>
-      <TextInput
-        style={styles.numberInput}
-        maxLength={2}
-        keyboardType={"number-pad"}
-        autoCapitalize={"none"}
-        autoCorrect={false}
-        value={number}
-        onChangeText={numberInputHandler}
-      />
-      <View style={styles.buttonsContainer}>
-        <View style={styles.buttonContainer}>
-          <PrimaryButton onPress={resetInputHandler}>Reset</PrimaryButton>
+    <View style={styles.rootContainer}>
+      <Title>Guess my number</Title>
+      <Card>
+        <InstructionText>Enter a number</InstructionText>
+        <TextInput
+          style={styles.numberInput}
+          maxLength={2}
+          keyboardType={"number-pad"}
+          autoCapitalize={"none"}
+          autoCorrect={false}
+          value={number}
+          onChangeText={numberInputHandler}
+        />
+        <View style={styles.buttonsContainer}>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={resetInputHandler}>Reset</PrimaryButton>
+          </View>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={confirmInputHandler}>Confirm</PrimaryButton>
+          </View>
         </View>
-        <View style={styles.buttonContainer}>
-          <PrimaryButton onPress={confirmInputHandler}>Confirm</PrimaryButton>
-        </View>
-      </View>
+      </Card>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  inputContainer: {
-    justifyContent: "center", //Main axis in this case vertical
-    alignItems: "center", //Secondary axis in this case horizontal
+  rootContainer: {
+    flex: 1,
     marginTop: 100,
-    marginHorizontal: 24,
-    padding: 16,
-    borderRadius: 8,
-    backgroundColor: Colors.primary800,
-    elevation: 4, //Android specific shadow
-    //iOS specific shadow
-    shadowColor: "black",
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 6,
-    shadowOpacity: 0.25,
+    alignItems: "center",
   },
   buttonsContainer: {
     flexDirection: "row-reverse",
