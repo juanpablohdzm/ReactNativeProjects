@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import Colors from "../../constants/colors";
 import PrimaryButton from "../ui/PrimaryButton";
-import Title from "../ui/Title";
+import Title from "../ui/Title.ios";
 
 export default function GameOverScreen({
   roundsNumber,
