@@ -1,6 +1,9 @@
 import { StyleSheet, Text, View, Pressable, Platform } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 export default function CategoryGridTile({ title, color, onPress }) {
+  //const navigation = useNavigation(); This allows you to use it anywhere without having to pass the reference from nested components
+
   return (
     <View style={styles.gridItem}>
       <Pressable
@@ -11,7 +14,7 @@ export default function CategoryGridTile({ title, color, onPress }) {
         android_ripple={{ color: "#ccc" }}
         onPress={onPress}
       >
-        <View style={[styles.innerContainer,{backgroundColor: color}]}>
+        <View style={[styles.innerContainer, { backgroundColor: color }]}>
           <Text style={styles.title}>{title}</Text>
         </View>
       </Pressable>
