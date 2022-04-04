@@ -1,13 +1,27 @@
-import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
+import { StyleSheet, Text, View, Image, ScrollView, Button } from "react-native";
+import { useLayoutEffect } from "react";
 import List from "../components/MealDetail/List";
 import Subtitle from "../components/MealDetail/Subtitle";
 import MealDetails from "../components/MealDetails";
+import IconButton from "../components/IconButton";
 
 import { MEALS } from "../data/dummy-data";
 
-export default function MealDetailScreen({ route }) {
+export default function MealDetailScreen({ route, navigation }) {
   const mealId = route.params.mealId;
   const selectedMeal = MEALS.find((meal) => meal.id === mealId);
+
+  function headerButtonPressHandler(){
+      console.log('Pressed!');
+  }
+
+  useLayoutEffect(()=>{
+    navigation.setOptions({
+        headerRight: ()=>{
+            return <IconButton icon='star' color='white' onPress={headerButtonPressHandler}/>
+        }
+    });
+  },[navigation,headerButtonPressHandler]);
   return (
     <ScrollView style ={styles.rootContainer}>
       <Image style={styles.image} source={{ uri: selectedMeal.imageUrl }} />
