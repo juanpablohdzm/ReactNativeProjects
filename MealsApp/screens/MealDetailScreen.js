@@ -1,29 +1,51 @@
-import { StyleSheet, Text, View, Image, ScrollView, Button } from "react-native";
-import { useLayoutEffect } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ScrollView,
+  Button,
+} from "react-native";
+import { useLayoutEffect, useContext } from "react";
+
 import List from "../components/MealDetail/List";
 import Subtitle from "../components/MealDetail/Subtitle";
 import MealDetails from "../components/MealDetails";
 import IconButton from "../components/IconButton";
-
 import { MEALS } from "../data/dummy-data";
+import { FavoritesContext } from "../store/context/favorites-context";
 
 export default function MealDetailScreen({ route, navigation }) {
+  const favoriteMealsCtx = useContext(FavoritesContext);
+
   const mealId = route.params.mealId;
   const selectedMeal = MEALS.find((meal) => meal.id === mealId);
+  const isMealFavorite = favoriteMealsCtx.ids.includes(mealId);
 
-  function headerButtonPressHandler(){
-      console.log('Pressed!');
+  function changeFavoriteStatusHandler() {
+    if(isMealFavorite){
+      favoriteMealsCtx.removeFavoriteFunc(mealId);
+    }
+    else{
+      favoriteMealsCtx.addFavoriteFunc(mealId);
+    }
   }
 
-  useLayoutEffect(()=>{
+  useLayoutEffect(() => {
     navigation.setOptions({
-        headerRight: ()=>{
-            return <IconButton icon='star' color='white' onPress={headerButtonPressHandler}/>
-        }
+      headerRight: () => {
+        return (
+          <IconButton
+            icon={isMealFavorite ? 'star' :'star-outline'}
+            color="white"
+            onPress={changeFavoriteStatusHandler}
+          />
+        );
+      },
     });
-  },[navigation,headerButtonPressHandler]);
+  }, [navigation, changeFavoriteStatusHandler]);
   return (
-    <ScrollView style ={styles.rootContainer}>
+    <ScrollView style={styles.rootContainer}>
       <Image style={styles.image} source={{ uri: selectedMeal.imageUrl }} />
       <Text style={styles.title}>{selectedMeal.title}</Text>
       <MealDetails
@@ -45,9 +67,9 @@ export default function MealDetailScreen({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
-    rootContainer:{
-        marginBottom: 32,
-    },
+  rootContainer: {
+    marginBottom: 32,
+  },
   image: {
     width: "100%",
     height: 350,
@@ -61,7 +83,7 @@ const styles = StyleSheet.create({
   },
   detailText: { color: "white" },
   listOuterContainer: {
-alignItems: 'center'
+    alignItems: "center",
   },
   listContainer: {
     width: "80%",
