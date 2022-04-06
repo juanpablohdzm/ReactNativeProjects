@@ -1,21 +1,24 @@
-import { useContext, useLayoutEffect } from "react";
+import { useContext, useLayoutEffect, useState } from "react";
 import { StyleSheet, View, TextInput } from "react-native";
 import ExpenseForm from "../components/ManageExpense/ExpenseForm";
 
 import Button from "../components/UI/Button";
 import IconButton from "../components/UI/IconButton";
+import LoadingOverlay from "../components/UI/LoadingOverlay";
 import { GlobalStyles } from "../constants/styles";
 import { ExpensesContext } from "../store/expenses-context";
+import { deleteExpense, storeExpense, updateExpense } from "../util/http";
 
 function ManageExpense({ route, navigation }) {
   const expensesCtx = useContext(ExpensesContext);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const editedExpenseId = route.params?.expenseId;
   const isEditing = !!editedExpenseId;
 
-  const selectedExpense = expensesCtx.expenses.find(expense => expense.id === editedExpenseId);
-
-
+  const selectedExpense = expensesCtx.expenses.find(
+    (expense) => expense.id === editedExpenseId
+  );
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -24,21 +27,33 @@ function ManageExpense({ route, navigation }) {
   }, [navigation, isEditing]);
 
   function deleteExpenseHandler() {
+
+    setIsSubmitting(true);
     expensesCtx.deleteExpense(editedExpenseId);
+    deleteExpense(editedExpenseId);
     navigation.goBack();
+
   }
 
   function cancelHandler() {
     navigation.goBack();
   }
 
-  function confirmHandler(expenseData) {
+  async function confirmHandler(expenseData) {
+
+    setIsSubmitting(true);
     if (isEditing) {
       expensesCtx.updateExpense(editedExpenseId, expenseData);
+      updateExpense(editedExpenseId,expenseData);
     } else {
-      expensesCtx.addExpense(expenseData);
+      const id = await storeExpense(expenseData);
+      expensesCtx.addExpense({ ...expenseData, id: id });
     }
     navigation.goBack();
+  }
+
+  if(isSubmitting){
+    return <LoadingOverlay/>
   }
 
   return (
@@ -47,7 +62,7 @@ function ManageExpense({ route, navigation }) {
         onCancel={cancelHandler}
         onSubmit={confirmHandler}
         submitButtonLabel={isEditing ? "Update" : "Add"}
-        defaultValues = {selectedExpense}
+        defaultValues={selectedExpense}
       />
 
       {isEditing && (
