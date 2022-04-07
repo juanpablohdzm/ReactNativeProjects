@@ -1,0 +1,21 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -project /Users/juanpablohernandezmosti/Documents/Programming/ReactNativeProjects/AuthApp/ios/RNCourse.xcodeproj -configuration Debug -scheme RNCourse -destination id=95152CC3-96D1-4D93-A65E-6EDB992F59D3
+
+User defaults from command line:
+    IDEPackageSupportUseBuiltinSCM = YES
+
+note: Using new build system
+note: Planning
+Analyze workspace
+
+Create build description
+Build description signature: 2d07675747d52264125751c72907e075
+Build description path: /Users/juanpablohernandezmosti/Library/Developer/Xcode/DerivedData/RNCourse-cjgcxdbyuiqlftfaornckrcepsvn/Build/Intermediates.noindex/XCBuildData/2d07675747d52264125751c72907e075-desc.xcbuild
+
+note: Build preparation complete
+note: Building targets in dependency order
+/Users/juanpablohernandezmosti/Documents/Programming/ReactNativeProjects/AuthApp/ios/Pods/Target Support Files/Pods-RNCourse/Pods-RNCourse.debug.xcconfig:1:1: error: unable to open file (in target "RNCourse" in project "RNCourse")
+/Users/juanpablohernandezmosti/Documents/Programming/ReactNativeProjects/AuthApp/ios/Pods/Target Support Files/Pods-RNCourse/Pods-RNCourse.debug.xcconfig:1:1: error: unable to open file (in target "RNCourse" in project "RNCourse")
+/Users/juanpablohernandezmosti/Documents/Programming/ReactNativeProjects/AuthApp/ios/Pods/Target Support Files/Pods-RNCourse/Pods-RNCourse.debug.xcconfig:1:1: error: unable to open file (in target "RNCourse" in project "RNCourse")
+/Users/juanpablohernandezmosti/Documents/Programming/ReactNativeProjects/AuthApp/ios/Pods/Target Support Files/Pods-RNCourse/Pods-RNCourse.debug.xcconfig:1:1: error: unable to open file (in target "RNCourse" in project "RNCourse")
+warning: Capabilities for Signing & Capabilities may not function correctly because its entitlements use a placeholder team ID. To resolve this, select a development team in the RNCourse editor. (in target 'RNCourse' from project 'RNCourse')
