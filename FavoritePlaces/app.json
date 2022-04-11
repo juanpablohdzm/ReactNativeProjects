@@ -27,6 +27,9 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      ["expo-image-picker",{"cameraPermission": "The app needs access to yout cmera in order to take photos"}]
+    ],
   }
 }
