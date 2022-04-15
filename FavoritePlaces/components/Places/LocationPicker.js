@@ -1,37 +1,40 @@
 import { StyleSheet, Text, View } from "react-native";
 import OutlinedButton from "../UI/OutlinedButton";
 
-import { getCurrentPositionAsync, useForegroundPermissions } from "expo-location";
+import {
+  getCurrentPositionAsync,
+  useForegroundPermissions,
+} from "expo-location";
 
 export default function LocationPicker() {
+  const [locationPermissionInformation, requestPermission] =
+    useForegroundPermissions();
 
-const [locationPermissionInformation, requestPermission] = useForegroundPermissions();
+  async function verifyPermissions() {
+    if (
+      locationPermissionInformation.status === PermissionStatus.UNDETERMINED
+    ) {
+      const permissionResponse = await requestPermission();
+      return permissionResponse.granted;
+    }
 
+    if (locationPermissionInformation.status === PermissionStatus.DENIED) {
+      Alert.alert(
+        "Insufficient Permissions!",
+        "You need to grant camera permissions to use this app."
+      );
+      return false;
+    }
 
- async function verifyPermissions(){
-    if (locationPermissionInformation.status === PermissionStatus.UNDETERMINED) {
-        const permissionResponse = await requestPermission();
-        return permissionResponse.granted;
-      }
-  
-      if (locationPermissionInformation.status === PermissionStatus.DENIED) {
-        Alert.alert(
-          "Insufficient Permissions!",
-          "You need to grant camera permissions to use this app."
-        );
-        return false;
-      }
-  
-      return true;
- }
+    return true;
+  }
   async function getLocationHandler() {
-
     const hasPermission = await verifyPermissions();
 
-    if(!hasPermission){
-        return;
+    if (!hasPermission) {
+      return;
     }
-       const location = await  getCurrentPositionAsync();
+    const location = await getCurrentPositionAsync();
   }
 
   function pickOnMapHandler() {}
